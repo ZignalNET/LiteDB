@@ -119,7 +119,7 @@ open class Database: NSObject {
         return String(from: fromStatement, atIndex: atIndex) // defaults ...
     }
     
-    func close() throws {
+    open func close() throws {
         if fileHandle == nil { return }
         let result = sqlite3_close(fileHandle)
         if result != SQLITE_OK { fileHandle = nil;  throw DatabaseError.closeFailed(result, "Unable to close database") }
@@ -143,11 +143,11 @@ open class Database: NSObject {
         }
     }
     
-    func isOpen() -> Bool {
+    open func isOpen() -> Bool {
         return self.fileHandle != nil
     }
     
-    func execute(_ sql: String, _ parameters: QueryParameters?, _ callback: RowQueryResults?) throws {
+    open func execute(_ sql: String, _ parameters: QueryParameters?, _ callback: RowQueryResults?) throws {
         var statement: Statement?
         try dispatchQueue.sync {
             do {
@@ -167,7 +167,7 @@ open class Database: NSObject {
         }
     }
     
-    func query(_ sql: String, _ parameters: QueryParameters?, _ callback: RowQueryResults?) throws -> TableRows {
+    open func query(_ sql: String, _ parameters: QueryParameters?, _ callback: RowQueryResults?) throws -> TableRows {
         var statement: Statement?
         var rows        = TableRows()
         try dispatchQueue.sync {
