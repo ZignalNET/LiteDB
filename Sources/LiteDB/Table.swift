@@ -23,7 +23,7 @@ open class Table: NSObject, TableProtocol {
         self.checkTableStructure()
     }
     
-    required override init() {
+    required public override init() {
         super.init()
     }
     
@@ -197,12 +197,12 @@ open class Table: NSObject, TableProtocol {
         return column.value
     }
     
-    override func value(forKey key: String) -> Any? {
+    open override func value(forKey key: String) -> Any? {
         if let value = getKey(key: key) { return value }
         else { return super.value(forKey: key) } // Maybe in super class !!
     }
     
-    override func setValue(_ value: Any?, forKey key: String) {
+    open override func setValue(_ value: Any?, forKey key: String) {
         guard let column = getKey(key: key) else { return }
         column.value = value
     }
