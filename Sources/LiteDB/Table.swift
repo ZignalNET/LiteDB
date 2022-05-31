@@ -17,7 +17,7 @@ open class Table: NSObject, TableProtocol {
     private var db: Database?
     open var tablename: String { return getTableName().lowercased() }
     
-    convenience init(db: Database?) {
+    public convenience init(db: Database?) {
         self.init()
         self.db = db
         self.checkTableStructure()
@@ -27,7 +27,7 @@ open class Table: NSObject, TableProtocol {
         super.init()
     }
     
-    subscript(name: String) -> Any? {
+    open subscript(name: String) -> Any? {
         get {
             guard let column = getColumns().filter({ return $0.key == name || $0.value.name == name }).first else { return nil }
             return column.value.value
