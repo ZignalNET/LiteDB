@@ -37,13 +37,13 @@ open class Table: NSObject, TableProtocol {
         }
     }
     
-    func getDB() -> Database? { return self.db }
+    open func getDB() -> Database? { return self.db }
     
-    func getTableName() -> String {
+    open func getTableName() -> String {
         fatalError("Must be overriden in derived class ...")
     }
     
-    func rows<T: Table>(_ callBack: RowCallback<T>?) throws {
+    open func rows<T: Table>(_ callBack: RowCallback<T>?) throws {
         guard let db = db, db.isOpen() else { throw DatabaseError.databaseNotOpened("Database not opened") }
         do {
             let rows = try db.query("select * from \(tablename)", nil, nil)
@@ -64,7 +64,7 @@ open class Table: NSObject, TableProtocol {
         }
     }
     
-    func rows<T: Table>() throws -> [T]
+    open func rows<T: Table>() throws -> [T]
     {
         guard let db = db, db.isOpen() else { throw DatabaseError.databaseNotOpened("Database not opened") }
         var tablerows: [T] = [T]()
@@ -88,7 +88,7 @@ open class Table: NSObject, TableProtocol {
         return tablerows
     }
     
-    func insert() throws -> Int64 {
+    open func insert() throws -> Int64 {
         guard let db = db, db.isOpen() else { throw DatabaseError.databaseNotOpened("Database not opened") }
         let sql = getInsertStatement()
         var lastrow: Int64 = 0
@@ -108,7 +108,7 @@ open class Table: NSObject, TableProtocol {
         return lastrow
     }
     
-    func update() throws -> Int32 {
+    open func update() throws -> Int32 {
         guard let db = db, db.isOpen() else { throw DatabaseError.databaseNotOpened("Database not opened") }
         var totalrows: Int32 = 0
         do {
@@ -125,7 +125,7 @@ open class Table: NSObject, TableProtocol {
         return totalrows
     }
     
-    func delete() throws -> Int32 {
+    open func delete() throws -> Int32 {
         guard let db = db, db.isOpen() else { throw DatabaseError.databaseNotOpened("Database not opened") }
         guard let key = getKey() else { throw DatabaseError.noPrimaryKey("Cannot delete. No primary key defined in [\(tablename)]") }
         guard let value = key.value else { throw DatabaseError.noPrimaryKey("Cannot delete. Primary key '\(key.name)' defined in '\(tablename)' is nil") }
