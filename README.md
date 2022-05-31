@@ -1,3 +1,3 @@
 # LiteDB
 
-A description of this package.
+LiteDb is a thin wrapper around SQLITE3 database.
