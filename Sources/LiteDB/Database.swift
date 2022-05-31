@@ -126,7 +126,7 @@ open class Database: NSObject {
         fileHandle = nil
     }
     
-    func remove() throws {
+    open func remove() throws {
         if let filePath = fileName, let cpath = datafilePath(filePath) {
             let tpath = cpath.replacingOccurrences(of: "file://", with: "")
             do {
