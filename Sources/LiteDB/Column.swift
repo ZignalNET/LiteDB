@@ -15,7 +15,7 @@ open class Column: NSObject {
     private(set) var default_value: Any?
     var value: Any? = nil
     
-    init(name: String, type: ColumnType = .TEXT, default_value: Any? = nil, primary_key: Bool = false, auto_increment: Bool = false) {
+    public init(name: String, type: ColumnType = .TEXT, default_value: Any? = nil, primary_key: Bool = false, auto_increment: Bool = false) {
         self.name = name
         self.type = type
         self.default_value = default_value

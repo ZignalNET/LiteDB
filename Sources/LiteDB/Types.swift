@@ -1,5 +1,5 @@
 //
-//  DataTypes.swift
+//  Types.swift
 //
 //  Created by Emmanuel Adigun on 2022/05/24.
 //  Copyright © 2022 Zignal Systems. All rights reserved.

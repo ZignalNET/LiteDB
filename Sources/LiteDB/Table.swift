@@ -15,7 +15,7 @@ protocol TableProtocol {
 
 open class Table: NSObject, TableProtocol {
     private var db: Database?
-    var tablename: String { return getTableName().lowercased() }
+    open var tablename: String { return getTableName().lowercased() }
     
     convenience init(db: Database?) {
         self.init()
