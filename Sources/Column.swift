@@ -7,7 +7,7 @@
 
 import Foundation
 
-class Column: NSObject {
+open class Column: NSObject {
     var name: String
     private(set) var type: ColumnType = .TEXT //defaults..
     private(set) var primary_key = false

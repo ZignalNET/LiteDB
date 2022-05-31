@@ -13,7 +13,7 @@ protocol TableProtocol {
     func setValue(_ value: Any?, forKey key: String)
 }
 
-class Table: NSObject, TableProtocol {
+open class Table: NSObject, TableProtocol {
     private var db: Database?
     var tablename: String { return getTableName().lowercased() }
     
