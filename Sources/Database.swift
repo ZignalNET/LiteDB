@@ -7,7 +7,7 @@
 import Foundation
 import SQLite3
 
-final class Database: NSObject {
+public final class Database: NSObject {
     private var fileName: String?
     private var fullFilePath: String?
     private var fileHandle: OpaquePointer?
