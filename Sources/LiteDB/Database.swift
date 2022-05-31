@@ -14,7 +14,7 @@ open class Database: NSObject {
     private let dispatchQueue = DispatchQueue(label:"queue.litedb.zignal.net", attributes:[])
     
     private static let _sharedInstance = Database()
-    static func sharedInstance(_ dbName: String) -> Database {
+    public static func sharedInstance(_ dbName: String) -> Database {
         _sharedInstance.fileName = dbName
         do { try _sharedInstance.open() } catch { }
         return _sharedInstance as! Self
