@@ -16,6 +16,7 @@ protocol TableProtocol {
 open class Table: NSObject, TableProtocol {
     private var db: Database?
     open var tablename: String { return getTableName().lowercased() }
+    open var count: Int32 { var c: Int32 = 0; do { c = try rows() } catch( _){ }; return c}
     
     public convenience init(db: Database?) {
         self.init()
@@ -65,12 +66,13 @@ open class Table: NSObject, TableProtocol {
         }
     }
     
-    open func rows<T: Table>() throws -> [T]
+    open func rows<T: Table>(_ filter: String? = nil) throws -> [T]
     {
         guard let db = db, db.isOpen() else { throw DatabaseError.databaseNotOpened("Database not opened") }
         var tablerows: [T] = [T]()
         do {
-            let rows = try db.query("select * from \(tablename)", nil, nil)
+            let whereSql = filter != nil ? "WHERE \(filter!)" : ""
+            let rows = try db.query("select * from \(tablename) \(whereSql)", nil, nil)
             let columns = getColumns()
             for row in rows {
                 let t = type(of: self).init() as! T
@@ -143,6 +145,18 @@ open class Table: NSObject, TableProtocol {
             throw error
         }
         return totalrows
+    }
+    
+    private func rows() throws -> Int32 {
+        if let db = db {
+            do {
+                return try db.totalRows(sql: "SELECT COUNT(*) from \(tablename)")
+            }
+            catch( let error ) {
+                throw error
+            }
+        }
+        else { return -1 }
     }
     
     private func checkTableStructure() {

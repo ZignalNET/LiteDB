@@ -12,6 +12,7 @@ enum DatabaseError: Error {
     case closeFailed(Int32, String)
     case removeFailed(String)
     case invalidHandle(String)
+    case invalidQuery(String)
     case databaseNotOpened(String)
     case unableToPrepareStatement(Int32, String)
     case unableToBindParameter(Int32, String)

@@ -119,6 +119,28 @@ open class Database: NSObject {
         return String(from: fromStatement, atIndex: atIndex) // defaults ...
     }
     
+    public func totalRows(sql: String?) throws -> Int32 {
+        guard fileHandle != nil else { throw DatabaseError.databaseNotOpened("Database not opened") }
+        guard let sql = sql else { throw DatabaseError.invalidQuery("SQL is nil")}
+        var count: Int32 = 0
+        try dispatchQueue.sync {
+            do {
+                let statement = try prepare(sql, nil)
+                let result = sqlite3_step(statement)
+                if ( result == SQLITE_ROW ) {
+                    count = sqlite3_column_int(statement, 0)
+                }
+                else {
+                    throw DatabaseError.unableToExecuteQuery(result, "Error: \(sql)")
+                }
+            }
+            catch( let error ) {
+                throw error
+            }
+        }
+        return count
+    }
+    
     open func close() throws {
         if fileHandle == nil { return }
         let result = sqlite3_close(fileHandle)
