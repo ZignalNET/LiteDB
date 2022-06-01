@@ -1,7 +1,7 @@
 //
 //  Table.swift
-//
-//  Created by Emmanuel Adigun on 2022/05/27.
+//  Part of LiteDB. A thin IOS Swift wrapper around Sqlite3 database
+//  Created by Emmanuel Adigun on 2022/05/24. emmanuel@zignal.net
 //  Copyright © 2022 Zignal Systems. All rights reserved.
 //
 
@@ -43,10 +43,11 @@ open class Table: NSObject, TableProtocol {
         fatalError("Must be overriden in derived class ...")
     }
     
-    open func rows<T: Table>(_ callBack: RowCallback<T>?) throws {
+    open func rows<T: Table>(_ filter: String?, _ callBack: RowCallback<T>?) throws {
         guard let db = db, db.isOpen() else { throw DatabaseError.databaseNotOpened("Database not opened") }
         do {
-            let rows = try db.query("select * from \(tablename)", nil, nil)
+            let whereSql = filter != nil ? "WHERE \(filter!)" : ""
+            let rows = try db.query("select * from \(tablename) \(whereSql)", nil, nil)
             let columns = getColumns()
             for row in rows {
                 let t = type(of: self).init() as! T

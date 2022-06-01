@@ -1,7 +1,7 @@
 //
 //  Column.swift
-//
-//  Created by Emmanuel Adigun on 2022/05/27.
+//  Part of LiteDB. A thin IOS Swift wrapper around Sqlite3 database
+//  Created by Emmanuel Adigun on 2022/05/24. emmanuel@zignal.net
 //  Copyright © 2022 Zignal Systems. All rights reserved.
 //
 

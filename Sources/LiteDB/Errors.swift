@@ -1,8 +1,7 @@
 //
 //  Errors.swift
-//  balance
-//
-//  Created by Emmanuel Adigun on 2022/05/25.
+//  Part of LiteDB. A thin IOS Swift wrapper around Sqlite3 database
+//  Created by Emmanuel Adigun on 2022/05/24. emmanuel@zignal.net
 //  Copyright © 2022 Zignal Systems. All rights reserved.
 //
 
