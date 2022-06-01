@@ -43,7 +43,7 @@ open class Table: NSObject, TableProtocol {
         fatalError("Must be overriden in derived class ...")
     }
     
-    open func rows<T: Table>(_ filter: String?, _ callBack: RowCallback<T>?) throws {
+    open func rows<T: Table>(_ filter: String? = nil, _ callBack: RowCallback<T>?) throws {
         guard let db = db, db.isOpen() else { throw DatabaseError.databaseNotOpened("Database not opened") }
         do {
             let whereSql = filter != nil ? "WHERE \(filter!)" : ""
