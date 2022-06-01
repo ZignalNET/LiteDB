@@ -129,8 +129,10 @@ open class Database: NSObject {
                 let result = sqlite3_step(statement)
                 if ( result == SQLITE_ROW ) {
                     count = sqlite3_column_int(statement, 0)
+                    sqlite3_finalize(statement)
                 }
                 else {
+                    sqlite3_finalize(statement)
                     throw DatabaseError.unableToExecuteQuery(result, "Error: \(sql)")
                 }
             }
