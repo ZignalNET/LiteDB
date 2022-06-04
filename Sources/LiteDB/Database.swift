@@ -2,7 +2,7 @@
 //  Database.swift
 //  Part of LiteDB. A thin IOS Swift wrapper around Sqlite3 database
 //  Created by Emmanuel Adigun on 2022/05/24. emmanuel@zignal.net
-//  Copyright © 2022 Zignal Systems. All rights reserved.
+//  Copyright © 2022. All rights reserved.
 
 import Foundation
 import SQLite3
@@ -232,5 +232,14 @@ open class Database: NSObject {
         }
         
         return rows
+    }
+}
+
+extension TableRow {
+    public subscript(name: String) -> Any? {
+        get {
+            guard let value = self[name] else { return nil }
+            return value
+        }
     }
 }
