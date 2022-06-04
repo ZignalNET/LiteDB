@@ -17,6 +17,8 @@ private let SQLITE_TRANSIENT       = unsafeBitCast(-1, to:sqlite3_destructor_typ
 public typealias TableRow          = Dictionary<String, Any?>
 public typealias TableRows         = [TableRow]
 
+public typealias TableRowObject    = NSObject
+
 public typealias ColumnNames       = [String]
 public typealias ColumnTypes       = [Int32]
 
@@ -29,6 +31,14 @@ public typealias RowCallback<T>    = (_ row: T ) -> Void
 
 public typealias DateTime          = Date
 typealias        TableColumns      = Dictionary<String, Column>
+
+public protocol RowProtocol {
+    init()
+}
+
+extension TableRowObject: RowProtocol  {
+    
+}
 
 public protocol Parameter {
     init?(from statement: Statement, atIndex: Int32)

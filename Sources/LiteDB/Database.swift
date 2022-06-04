@@ -233,14 +233,58 @@ open class Database: NSObject {
         
         return rows
     }
+    
+    open func query<T: TableRowObject>(_ sql: String, _ parameters: QueryParameters?, _ callBack: RowCallback<T>?) throws  {
+        var statement: Statement?
+        try dispatchQueue.sync {
+            do {
+                var firstRow = false
+                statement = try prepare(sql, parameters)
+                var columnNames = ColumnNames()
+                var columnTypes = ColumnTypes()
+                let columnCount = sqlite3_column_count(statement)
+                var result = sqlite3_step(statement)
+                while result == SQLITE_ROW {
+                    if !firstRow {
+                        for idx in 0..<columnCount {
+                            columnNames.append(String(validatingUTF8:sqlite3_column_name(statement, idx)!)!)
+                            columnTypes.append(self.getColumnType(fromStatement: statement!, atIndex: idx))
+                        }
+                        firstRow = true
+                    }
+                    
+                    let t = T.init()
+                    for idx in 0..<columnCount {
+                        let name = columnNames[Int(idx)]
+                        let type = columnTypes[Int(idx)]
+                        if let value = self.getColumnValue(atIndex: idx, fromStatement: statement!, type: type ){
+                            t.setValue(value, forKey: name)
+                        }
+                    }
+                    callBack?(t as T)
+                    
+                    // Fetch Next row
+                    result = sqlite3_step(statement)
+                }
+                
+                sqlite3_finalize(statement)
+            }
+            catch (let error) {
+                //sqlite3_finalize(statement)
+                throw error
+            }
+        }
+    }
+    
 }
 
+//This is NOT Called; needs to be fixed !!!!
 extension TableRow {
     public subscript(name: String) -> Any? {
         get {
-            print("TableRow [] called ...")
             guard let value = self[name] else { return nil }
             return value
         }
     }
 }
+
