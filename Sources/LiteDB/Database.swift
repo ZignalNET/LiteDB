@@ -238,6 +238,7 @@ open class Database: NSObject {
 extension TableRow {
     public subscript(name: String) -> Any? {
         get {
+            print("TableRow [] called ...")
             guard let value = self[name] else { return nil }
             return value
         }
