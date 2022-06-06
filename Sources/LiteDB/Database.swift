@@ -258,7 +258,7 @@ open class Database: NSObject {
                         let name = columnNames[Int(idx)]
                         let type = columnTypes[Int(idx)]
                         if let value = self.getColumnValue(atIndex: idx, fromStatement: statement!, type: type ){
-                            print( name, value )
+                            print( name, value, t.attributeKeys )
                             t.setValue(value, forKey: name)
                         }
                     }
@@ -280,11 +280,20 @@ open class Database: NSObject {
 }
 
 //This is NOT Called; needs to be fixed !!!!
-extension TableRow {
-    public subscript(name: String) -> Any? {
-        get {
-            guard let value = self[name] else { return nil }
-            return value
+extension Database {
+    /*for (_, attr) in Mirror(reflecting:self).children.enumerated() {
+    if let name = attr.label, let column = attr.value as? Column {
+        columns[name] = column
+    }
+}
+    */
+    private func getObjectProperties<T>(t: T) {
+        var columns: Dictionary<String,Any> = [:]
+        for (_, attr) in Mirror(reflecting:t).children.enumerated() {
+            if let name = attr.label {
+                let value = attr.value
+                columns[name] = value
+            }
         }
     }
 }
