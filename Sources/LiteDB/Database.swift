@@ -254,13 +254,13 @@ open class Database: NSObject {
                     }
                     
                     let t = T.init()
+                    //let t = type(of: TableRowObject()).init() as! T
                     for idx in 0..<columnCount {
                         let name = columnNames[Int(idx)]
                         let type = columnTypes[Int(idx)]
                         if let value = self.getColumnValue(atIndex: idx, fromStatement: statement!, type: type ){
                             print( name, value, getObjectProperties(t: t) )
                             //t.setValue(value, forKey: name)
-                            t.setValue(value, forUndefinedKey: name)
                         }
                     }
                     callBack?(t as T)

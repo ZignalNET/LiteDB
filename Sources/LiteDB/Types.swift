@@ -17,7 +17,7 @@ private let SQLITE_TRANSIENT       = unsafeBitCast(-1, to:sqlite3_destructor_typ
 public typealias TableRow          = Dictionary<String, Any?>
 public typealias TableRows         = [TableRow]
 
-public typealias TableRowObject    = NSObject
+//public typealias TableRowObject    = NSObject
 
 public typealias ColumnNames       = [String]
 public typealias ColumnTypes       = [Int32]
@@ -36,8 +36,11 @@ public protocol RowProtocol {
     init()
 }
 
-extension TableRowObject: RowProtocol  {
-    
+open class TableRowObject: NSObject, RowProtocol  {
+    required public override convenience init() {
+        self.init()
+        print("TableRowObject: Init called ...")
+    }
 }
 
 public protocol Parameter {
