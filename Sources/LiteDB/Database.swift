@@ -258,11 +258,11 @@ open class Database: NSObject {
                         let name = columnNames[Int(idx)]
                         let type = columnTypes[Int(idx)]
                         if let value = self.getColumnValue(atIndex: idx, fromStatement: statement!, type: type ){
-                            print( name, value, t.attributeKeys, t )
+                            print( name, value, (t as NSObject ).attributeKeys, t )
                             //t.setValue(value, forKey: name)
                         }
                     }
-                    callBack?(t as T)
+                    callBack?(t)
                     
                     // Fetch Next row
                     result = sqlite3_step(statement)
