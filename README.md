@@ -20,12 +20,12 @@ class Contacts: Table {
 }
 ```
 
-##Create you sqlite3 database 
+## Create you sqlite3 database 
 ```
 let db = Database.sharedInstance("mydatabase.sqlite3")
 ```
 
-###Test whether its opened
+### Test whether its opened
 ```
 if db.isOpen() {
     do {
@@ -52,7 +52,7 @@ if db.isOpen() {
 }
 ```
 
-###Fetch records ..
+### Fetch records ..
 ```
 if db.isOpen() {
     do {
@@ -79,7 +79,7 @@ if db.isOpen() {
 }
 ```
 
-###You can also access your sqlite3 database via raw SQL; its your choice!
+### You can also access your sqlite3 database via raw SQL; its your choice!
 
 ```
 if db.isOpen() {
@@ -101,7 +101,7 @@ if db.isOpen() {
 }
 ```
 
-###Use your custom classes
+### Use your custom classes
 ```
 class Person: NSObject {
     @objc var first: Int = 0   //Don't forget to add @objc to members!!
@@ -110,7 +110,7 @@ class Person: NSObject {
 }
 ```
 
-###Do your thing
+### Do your thing
 ```
 do {
     try db.execute("create table IF NOT EXISTS t1( t1_uid INT, t1_period DATETIME )", nil, nil )
