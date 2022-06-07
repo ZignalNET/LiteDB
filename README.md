@@ -5,7 +5,7 @@ LiteDb is a thin IOS `Swift` wrapper around `SQLITE3` database.
 
 ## Usage
 
-```swift
+```
 import LiteDB
 
 //Define your Table
@@ -18,11 +18,15 @@ class Contacts: Table {
     
     override var tablename: String { return "c_contacts" }
 }
+```
 
-//Create you sqlite3 database 
+##Create you sqlite3 database 
+```
 let db = Database.sharedInstance("mydatabase.sqlite3")
+```
 
-//Test whether its opened
+###Test whether its opened
+```
 if db.isOpen() {
     do {
         let c = Contacts(db: db)
@@ -46,8 +50,10 @@ if db.isOpen() {
         print(error)
     }
 }
+```
 
-//Fetch records ..
+###Fetch records ..
+```
 if db.isOpen() {
     do {
         let c = Contacts(db: db)
@@ -71,9 +77,11 @@ if db.isOpen() {
         print(error)
     }
 }
+```
 
+###You can also access your sqlite3 database via raw SQL; its your choice!
 
-You can also access your sqlite3 database via raw SQL; its your choice!
+```
 if db.isOpen() {
     do {
         
@@ -91,16 +99,19 @@ if db.isOpen() {
         print(error)
     }
 }
+```
 
-
-Use custom classes
-
+###Use your custom classes
+```
 class Person: NSObject {
     @objc var first: Int = 0   //Don't forget to add @objc to members!!
     @objc var second: Int = 0
     @objc var period: DateTime?
 }
+```
 
+###Do your thing
+```
 do {
     try db.execute("create table IF NOT EXISTS t1( t1_uid INT, t1_period DATETIME )", nil, nil )
     try db.execute("create table IF NOT EXISTS t2( t2_uid INT, t2_t1_uid INT, t2_period DATETIME )", nil, nil )
@@ -109,12 +120,17 @@ do {
     try db.execute("insert into t1 (t1_uid, t1_period) values ( ? , ? )", [3, Date()], nil )
     try db.execute("insert into t2 (t2_uid, t2_t1_uid, t2_period) values ( ? , ? , ? )", [1, 1, Date()], nil )
     
-    try db.query("select t1_uid+5 as first, t2_uid+10 as second, t1_period as period from t1,t2 where t2_t1_uid = t1_uid", nil ) { ( row: Person) in
+    let _ = try db.query("select t1_uid+5 as first, t2_uid+10 as second, t1_period as period from t1,t2 where t2_t1_uid = t1_uid", nil ) { ( row: Person) in
         print( row.first, row.second, row.period! )
         
     }
     
+    OR
     
+    let people: [Person] = try db.query("select t1_uid+5 as first, t2_uid+10 as second, t1_period as period from t1,t2 where t2_t1_uid = t1_uid", nil , nil )
+    for row in people {
+        print( row.first, row.second, row.period! )
+    }
     
     
     try db.close()
@@ -123,7 +139,6 @@ do {
 catch( let error ) {
     print(error)
 }
-
 
 ```
 
