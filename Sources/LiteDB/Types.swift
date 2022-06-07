@@ -32,7 +32,7 @@ public typealias RowCallback<T>    = (_ row: T ) -> Void
 public typealias DateTime          = Date
 typealias        TableColumns      = Dictionary<String, Column>
 
-public protocol TableRowObject: NSObject {
+public protocol TableRowObject {
     init()
 }
 
