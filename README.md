@@ -4,7 +4,8 @@ LiteDb is a thin IOS `Swift` wrapper around `SQLITE3` database.
 
 # Installation
 
-## Swift Package Manager - SPM. Its a tool for managing the distribution of source codes
+## Swift Package Manager - SPM. 
+###### Its a tool for managing the distribution of source codes
 Add `https://github.com/ZignalNET/LiteDB` to the package URL
 
 ## Usage
