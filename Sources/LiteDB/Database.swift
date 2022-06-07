@@ -238,6 +238,15 @@ open class Database: NSObject {
         var statement: Statement?
         try dispatchQueue.sync {
             do {
+                var count : UInt32 = 0
+                if let fields = class_copyPropertyList(T.self, &count) {
+                    for i in 0..<count
+                    {
+                        let strKey = String(cString: property_getName(fields[Int(i)]) )
+                        print(strKey)
+                    }
+                }
+                
                 var firstRow = false
                 statement = try prepare(sql, parameters)
                 var columnNames = ColumnNames()
@@ -254,9 +263,6 @@ open class Database: NSObject {
                     }
                     
                     let t = T.init()
-                    var outCount : UInt32 = 0
-                    let properties = class_copyPropertyList(T.self, &outCount)
-                    print(properties ?? "NIL", outCount)
                     for idx in 0..<columnCount {
                         let name = columnNames[Int(idx)]
                         let type = columnTypes[Int(idx)]
