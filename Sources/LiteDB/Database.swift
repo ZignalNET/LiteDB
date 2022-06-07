@@ -254,11 +254,13 @@ open class Database: NSObject {
                     }
                     
                     let t = T.init()
+                    var outCount : UInt32 = 0
+                    let properties = class_copyPropertyList(T.self, &outCount)
+                    print(properties ?? "NIL", outCount)
                     for idx in 0..<columnCount {
                         let name = columnNames[Int(idx)]
                         let type = columnTypes[Int(idx)]
                         if let value = self.getColumnValue(atIndex: idx, fromStatement: statement!, type: type ){
-                            print( name, value, t )
                             t.setValue(value, forKey: name)
                         }
                     }
