@@ -239,44 +239,45 @@ open class Database: NSObject {
         try dispatchQueue.sync {
             do {
                 var count : UInt32 = 0
+                var columns: [String] = []
                 if let fields = class_copyPropertyList(T.self, &count) {
                     for i in 0..<count
                     {
                         let strKey = String(cString: property_getName(fields[Int(i)]) )
-                        print(strKey)
+                        columns.append(strKey)
                     }
-                }
                 
-                var firstRow = false
-                statement = try prepare(sql, parameters)
-                var columnNames = ColumnNames()
-                var columnTypes = ColumnTypes()
-                let columnCount = sqlite3_column_count(statement)
-                var result = sqlite3_step(statement)
-                while result == SQLITE_ROW {
-                    if !firstRow {
+                    var firstRow = false
+                    statement = try prepare(sql, parameters)
+                    var columnNames = ColumnNames()
+                    var columnTypes = ColumnTypes()
+                    let columnCount = sqlite3_column_count(statement)
+                    var result = sqlite3_step(statement)
+                    while result == SQLITE_ROW {
+                        if !firstRow {
+                            for idx in 0..<columnCount {
+                                columnNames.append(String(validatingUTF8:sqlite3_column_name(statement, idx)!)!)
+                                columnTypes.append(self.getColumnType(fromStatement: statement!, atIndex: idx))
+                            }
+                            firstRow = true
+                        }
+                        
+                        let t = T.init()
                         for idx in 0..<columnCount {
-                            columnNames.append(String(validatingUTF8:sqlite3_column_name(statement, idx)!)!)
-                            columnTypes.append(self.getColumnType(fromStatement: statement!, atIndex: idx))
+                            let name = columnNames[Int(idx)]
+                            let type = columnTypes[Int(idx)]
+                            if let value = self.getColumnValue(atIndex: idx, fromStatement: statement!, type: type ), columns.contains(name){
+                                t.setValue(value, forKey: name)
+                            }
                         }
-                        firstRow = true
+                        callBack?(t)
+                        
+                        // Fetch Next row
+                        result = sqlite3_step(statement)
                     }
                     
-                    let t = T.init()
-                    for idx in 0..<columnCount {
-                        let name = columnNames[Int(idx)]
-                        let type = columnTypes[Int(idx)]
-                        if let value = self.getColumnValue(atIndex: idx, fromStatement: statement!, type: type ){
-                            t.setValue(value, forKey: name)
-                        }
-                    }
-                    callBack?(t)
-                    
-                    // Fetch Next row
-                    result = sqlite3_step(statement)
+                    sqlite3_finalize(statement)
                 }
-                
-                sqlite3_finalize(statement)
             }
             catch (let error) {
                 //sqlite3_finalize(statement)
