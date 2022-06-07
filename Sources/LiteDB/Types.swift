@@ -32,16 +32,10 @@ public typealias RowCallback<T>    = (_ row: T ) -> Void
 public typealias DateTime          = Date
 typealias        TableColumns      = Dictionary<String, Column>
 
-public protocol RowProtocol {
+public protocol TableRowObject {
     init()
 }
 
-open class TableRowObject: NSObject, RowProtocol  {
-    required public override convenience init() {
-        self.init()
-        print("TableRowObject: Init called ...")
-    }
-}
 
 public protocol Parameter {
     init?(from statement: Statement, atIndex: Int32)
