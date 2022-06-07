@@ -234,7 +234,7 @@ open class Database: NSObject {
         return rows
     }
     
-    open func query<T: TableRowObject>(_ sql: String, _ parameters: QueryParameters?, _ callBack: RowCallback<T>?) throws  {
+    open func query<T: NSObject>(_ sql: String, _ parameters: QueryParameters?, _ callBack: RowCallback<T>?) throws  {
         var statement: Statement?
         try dispatchQueue.sync {
             do {
