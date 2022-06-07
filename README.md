@@ -2,6 +2,10 @@
 
 LiteDb is a thin IOS `Swift` wrapper around `SQLITE3` database.
 
+# Installation
+
+## Swift Package Manager - SPM. Its a tool for managing the distribution of source codes
+Add `https://github.com/ZignalNET/LiteDB` to the package URL
 
 ## Usage
 
@@ -20,7 +24,7 @@ class Contacts: Table {
 }
 ```
 
-## Create you sqlite3 database 
+## Create your sqlite3 database 
 ```
 let db = Database.sharedInstance("mydatabase.sqlite3")
 ```
