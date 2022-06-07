@@ -234,8 +234,9 @@ open class Database: NSObject {
         return rows
     }
     
-    open func query<T: NSObject>(_ sql: String, _ parameters: QueryParameters?, _ callBack: RowCallback<T>?) throws  {
+    open func query<T: NSObject>(_ sql: String, _ parameters: QueryParameters?, _ callBack: RowCallback<T>?) throws -> [T] {
         var statement: Statement?
+        var rows: [T] = []
         try dispatchQueue.sync {
             do {
                 var count : UInt32 = 0
@@ -271,6 +272,7 @@ open class Database: NSObject {
                             }
                         }
                         callBack?(t)
+                        rows.append(t)
                         
                         // Fetch Next row
                         result = sqlite3_step(statement)
@@ -284,6 +286,8 @@ open class Database: NSObject {
                 throw error
             }
         }
+        
+        return rows
     }
     
 }

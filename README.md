@@ -93,6 +93,37 @@ if db.isOpen() {
 }
 
 
+Use custom classes
+
+class Person: NSObject {
+    @objc var first: Int = 0   //Don't forget to add @objc to members!!
+    @objc var second: Int = 0
+    @objc var period: DateTime?
+}
+
+do {
+    try db.execute("create table IF NOT EXISTS t1( t1_uid INT, t1_period DATETIME )", nil, nil )
+    try db.execute("create table IF NOT EXISTS t2( t2_uid INT, t2_t1_uid INT, t2_period DATETIME )", nil, nil )
+    try db.execute("insert into t1 (t1_uid, t1_period) values ( ? , ? )", [1, Date()], nil )
+    try db.execute("insert into t1 (t1_uid, t1_period) values ( ? , ? )", [2, Date()], nil )
+    try db.execute("insert into t1 (t1_uid, t1_period) values ( ? , ? )", [3, Date()], nil )
+    try db.execute("insert into t2 (t2_uid, t2_t1_uid, t2_period) values ( ? , ? , ? )", [1, 1, Date()], nil )
+    
+    try db.query("select t1_uid+5 as first, t2_uid+10 as second, t1_period as period from t1,t2 where t2_t1_uid = t1_uid", nil ) { ( row: Person) in
+        print( row.first, row.second, row.period! )
+        
+    }
+    
+    
+    
+    
+    try db.close()
+    try db.remove()
+}
+catch( let error ) {
+    print(error)
+}
+
 
 ```
 
