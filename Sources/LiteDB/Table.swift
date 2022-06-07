@@ -284,7 +284,7 @@ open class Table: NSObject, TableProtocol {
                 if field.type.type == SQLITE_TEXT  { sql += "'\(v)'" }
                 else if field.type.type == SQLITE_DATE ||
                     field.type.type == SQLITE_DATETIME {
-                    if v is Date {
+                    if v is Date || v is DateTime {
                         sql += "'\(Database.databaseDateFormatter.string(from: v as! Date))'"
                     }
                     else { sql += "'\(v)'" }
