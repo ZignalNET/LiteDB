@@ -311,3 +311,14 @@ open class Table: NSObject, TableProtocol {
     
 }
 
+extension Table {
+    open func drop() throws  {
+        guard let db = db, db.isOpen() else { throw DatabaseError.databaseNotOpened("Database not opened") }
+        do {
+            try db.execute("DROP table \(self.tablename)", nil, nil)
+        }
+        catch( let error ) {
+            throw error
+        }
+    }
+}
