@@ -292,5 +292,23 @@ open class Database: NSObject {
     
 }
 
+extension Database {
+    open func drop(_ table: String ) throws  {
+        guard fileHandle != nil else { throw DatabaseError.databaseNotOpened("Database not opened") }
+        do {
+            try execute("DROP table \(table)", nil, nil)
+            try execute("VACUUM; ANALYZE", nil, nil)
+        }
+        catch( let error ) {
+            throw error
+        }
+    }
+    open func dropTables(_ tables: [String] ) throws  {
+        guard fileHandle != nil else { throw DatabaseError.databaseNotOpened("Database not opened") }
+        for table in tables {
+            try drop( table )
+        }
+    }
+}
 
 
